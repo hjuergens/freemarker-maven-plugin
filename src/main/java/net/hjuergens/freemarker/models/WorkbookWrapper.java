@@ -1,12 +1,13 @@
 package net.hjuergens.freemarker.models;
 
 import freemarker.template.*;
-import java.io.File;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+
+import java.io.File;
 
 /**
  * created on 03.10.15
@@ -21,6 +22,7 @@ public class WorkbookWrapper
         super(incompatibleImprovements);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected TemplateModel handleUnknownType(final Object obj)
             throws TemplateModelException {

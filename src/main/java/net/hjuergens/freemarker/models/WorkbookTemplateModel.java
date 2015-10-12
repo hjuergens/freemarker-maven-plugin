@@ -1,6 +1,5 @@
 package net.hjuergens.freemarker.models;
 
-import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.*;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -9,7 +8,7 @@ import org.apache.poi.ss.usermodel.Workbook;
  *
  * @author juergens
  */
-public class WorkbookTemplateModel
+class WorkbookTemplateModel
         extends WrappingTemplateModel
         implements TemplateSequenceModel, TemplateHashModel, AdapterTemplateModel  {
 

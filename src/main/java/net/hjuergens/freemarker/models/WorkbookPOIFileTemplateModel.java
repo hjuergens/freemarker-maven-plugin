@@ -1,19 +1,20 @@
 package net.hjuergens.freemarker.models;
 
 import freemarker.template.*;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Iterator;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * created on 29.09.15
  *
  * @author juergens
  */
-public class WorkbookPOIFileTemplateModel
+class WorkbookPOIFileTemplateModel
         extends WrappingTemplateModel
         implements TemplateCollectionModelEx, TemplateHashModel, AdapterTemplateModel {
 

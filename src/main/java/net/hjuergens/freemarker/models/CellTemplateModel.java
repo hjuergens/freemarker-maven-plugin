@@ -2,16 +2,13 @@ package net.hjuergens.freemarker.models;
 
 import freemarker.template.*;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-
-import java.util.Iterator;
 
 /**
  * created on 29.09.15
  *
  * @author juergens
  */
-public class CellTemplateModel
+class CellTemplateModel
         extends WrappingTemplateModel
         implements TemplateHashModel, AdapterTemplateModel {
 

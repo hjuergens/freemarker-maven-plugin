@@ -1,7 +1,7 @@
 package net.hjuergens.freemarker.models;
 
 import freemarker.template.*;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
@@ -21,7 +21,11 @@ public class ColumnTemplateModel
         this.nameAndType = column;
     }
 
-    @Override  // coming from AdapterTemplateModel
+    /**
+     * TODO override
+     * @param hint a class
+     * @return
+     */
     public Object getAdaptedObject(Class hint) {
         return Row.class;
     }
@@ -34,7 +38,12 @@ public class ColumnTemplateModel
         return new SimpleScalar( nameAndType.getValue().getStringCellValue() );
     }
 
-    @Override
+    /**
+     * TODO override
+     * @param s a key
+     * @return
+     * @throws TemplateModelException
+     */
     public TemplateModel get(String s) throws TemplateModelException {
         if(s.equals("name"))
             return getName();
@@ -43,7 +52,11 @@ public class ColumnTemplateModel
         else return null;
     }
 
-    @Override
+    /**
+     * TODO override
+     * @return
+     * @throws TemplateModelException
+     */
     public boolean isEmpty() throws TemplateModelException {
         return false;
     }

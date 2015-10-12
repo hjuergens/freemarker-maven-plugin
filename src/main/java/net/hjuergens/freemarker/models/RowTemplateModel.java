@@ -3,7 +3,6 @@ package net.hjuergens.freemarker.models;
 import freemarker.template.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 
 import java.util.Iterator;
 
@@ -12,7 +11,7 @@ import java.util.Iterator;
  *
  * @author juergens
  */
-public class RowTemplateModel
+class RowTemplateModel
         extends WrappingTemplateModel
         implements TemplateCollectionModel, AdapterTemplateModel {
 
