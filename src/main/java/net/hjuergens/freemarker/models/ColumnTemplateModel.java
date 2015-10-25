@@ -10,7 +10,7 @@ import org.apache.poi.ss.usermodel.Row;
  *
  * @author juergens
  */
-public class ColumnTemplateModel
+class ColumnTemplateModel
         extends WrappingTemplateModel
         implements TemplateHashModel, AdapterTemplateModel {
 
@@ -47,8 +47,16 @@ public class ColumnTemplateModel
     public TemplateModel get(String s) throws TemplateModelException {
         if(s.equals("name"))
             return getName();
-        else if(s.equals("type"))
+        else if(s.equals("typeName"))
             return getTypeName();
+        else if(s.equals("type")) {
+            final Cell cell = nameAndType.getValue();
+            final int cellType;
+            if(cell.getCellType() == Cell.CELL_TYPE_FORMULA)
+                cellType = cell.getCachedFormulaResultType();
+            else cellType = cell.getCellType();
+            return wrap(cellType);
+        }
         else return null;
     }
 

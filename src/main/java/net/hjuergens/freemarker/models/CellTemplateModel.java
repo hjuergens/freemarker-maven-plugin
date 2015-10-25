@@ -25,25 +25,48 @@ class CellTemplateModel
         return cell;
     }
 
+    public Number getCellType() {
+        return cell.getCellType();
+    }
+
     @Override
     public TemplateModel get(String s) throws TemplateModelException {
-        switch (cell.getCellType()) {
+        if("type".equals(s)) {
+            return wrap( getCellType() );
+        } else if("columnIndex".equals(s)) {
+            return wrap( cell.getColumnIndex() );
+        } else if("row".equals(s)) {
+            return wrap( cell.getRow() );
+        } else if("sheet".equals(s)) {
+            return wrap( cell.getSheet() );
+        } else if("value".equals(s)) {
+            return wrap( getValue(cell) );
+        } else return null;
+    }
+
+    public static Object getValue(Cell cell) {
+        final int cellType;
+        if(cell.getCellType() == Cell.CELL_TYPE_FORMULA)
+            cellType = cell.getCachedFormulaResultType();
+        else cellType = cell.getCellType();
+
+        switch (cellType) {
             case Cell.CELL_TYPE_BOOLEAN:
-                return wrap( cell.getBooleanCellValue() );
+                return ( cell.getBooleanCellValue() );
             case Cell.CELL_TYPE_NUMERIC:
-                return wrap( cell.getNumericCellValue() );
+                return ( cell.getNumericCellValue() );
             case Cell.CELL_TYPE_STRING:
-                return wrap( cell.getStringCellValue() );
+                return ( cell.getStringCellValue() );
             case Cell.CELL_TYPE_BLANK:
-                return wrap( "" );
+                return ( "" );
             case Cell.CELL_TYPE_ERROR:
-                return wrap( cell.getErrorCellValue() );
+                return ( cell.getErrorCellValue() );
             case Cell.CELL_TYPE_FORMULA:
                 System.out.println(cell.getCellFormula());
-                return wrap( cell.getCellFormula() );
-//                logger.trace(String.format("cell formula=%s", cell.getCellFormula()));
+                return ( cell.getCellFormula() );
+            default:
+                return null;
         }
-        return wrap( cell );
     }
 
     @Override

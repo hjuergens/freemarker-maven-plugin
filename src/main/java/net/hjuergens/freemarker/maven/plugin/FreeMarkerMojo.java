@@ -25,14 +25,14 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Collections;
+import java.util.Set;
 
+import static java.nio.file.Files.getFileStore;
 import static java.nio.file.Files.newBufferedWriter;
 import static java.nio.file.StandardOpenOption.*;
 
@@ -45,114 +45,187 @@ public class FreeMarkerMojo
         extends AbstractMojo {
 
     /**
-     * Location of the file.
+     * Location of the template file.
      */
-    @Parameter(defaultValue = "${project.build.directory}", property = "outputDir", required = true)    
-    private File outputDirectory;
+    @Parameter(property = "templateFile", required = false)
+    private File templateFile;
 
     /**
-     * Location of the file.
+     * Location of the template files.
      */
-    @Parameter(defaultValue = "${project.basedir}/src/main/resources/ftl/database.ftl", property = "templateFile", required = true)
-    private File templateFile;// = "src/main/resources/ftl/database.ftl";
+    @Parameter(property = "templateRootDirectory", required = false)
+    private File templateRootDirectory;
+
+    /**s
+     * Location of the output directory.
+     */
+    @Parameter(defaultValue = "${project.build.directory}/generated-resources", property = "resultDirectory", required = true)
+    private File resultDirectory;
 
     /**
-     * Location of the file.
+     * Location of the Excel file containing the model.
      */
-    @Parameter(defaultValue = "${project.build.directory}/generated-resources/mdo", property = "resultDirectory", required = true)
-    private File resultDirectory;// = "target/generated-resources/mdo/exceldata.mdo";
-
-    /**
-     * Location of the file.
-     */
-    @Parameter(defaultValue = "${project.basedir}/src/main/resources/Indexes.xlsx", property = "modelFile", required = true)
-    private File modelFile;// = "target/generated-resources/mdo/exceldata.mdo";
+    @Parameter(property = "modelFile", required = true)
+    private File modelFile;
 
     public void execute()
             throws MojoExecutionException {
-        if (!templateFile.exists()) {
-            throw new MojoExecutionException("Template path " + templateFile.toString() + " does not exists.");
+        if (modelFile == null) {
+            throw new MojoExecutionException("Model file has to be specified.");
         }
-        if (!templateFile.isFile() || !templateFile.canRead()) {
-            throw new MojoExecutionException("Template path has to be a readable file.");
+        if (!modelFile.exists()) {
+            throw new MojoExecutionException("Model file " + modelFile.toString() + " does not exists.");
+        }
+        if (!modelFile.isFile() || !modelFile.canRead()) {
+            throw new MojoExecutionException("Model path has to be a readable file.");
+        }
+        if (!(modelFile.toString().toLowerCase().endsWith(".xlsx") || modelFile.toString().toLowerCase().endsWith(".xlsm"))) {
+            throw new MojoExecutionException("File name has to end with '.xlsx'.");
         }
 
-        final File templateDirectory = templateFile.getParentFile();
-        assert templateDirectory.equals(templateFile.toPath().getParent().toFile());
-        final String templateFileName = templateFile.getName();
-        assert templateFileName.equals(templateFile.toPath().getFileName().toString());
-        final Configuration cfg = new Configuration(Configuration.VERSION_2_3_22);
-        {
+        if(templateFile == null && templateRootDirectory == null) {
+            throw new MojoExecutionException("Either the template file or the root directory must be declared.");
+        }
+        if (templateFile != null) {
+            getLog().info(templateFile.toString());
+            if (!templateFile.exists()) {
+                throw new MojoExecutionException("Template path " + templateFile.toString() + " does not exists.");
+            }
+            if (!templateFile.isFile() || !templateFile.canRead()) {
+                throw new MojoExecutionException("Template path has to be a readable file.");
+            }
+        }
+        if (templateRootDirectory != null) {
+            if (!templateRootDirectory.exists()) {
+                throw new MojoExecutionException("Template path " + templateRootDirectory.toString() + " does not exists.");
+            }
+            if (!templateRootDirectory.isDirectory() || !templateRootDirectory.canRead()) {
+                throw new MojoExecutionException("Template path has to be a readable directory.");
+            }
+        }
+
+        if (templateFile != null) {
             try {
-                cfg.setDirectoryForTemplateLoading(templateDirectory);  
+                processFile(templateFile.getParentFile(), templateFile.getName(), resultDirectory.toPath());
+            } catch (IOException e) {
+                throw new MojoExecutionException(e.getMessage(),e);
+            } catch (TemplateException e) {
+                throw new MojoExecutionException(e.getTemplateSourceName(),e);
+            }
+        }
+
+        if (templateRootDirectory != null) {
+            Path start = templateRootDirectory.toPath();
+            Set<FileVisitOption> options = Collections.emptySet();
+            int maxDepth = Integer.MAX_VALUE;
+            FileVisitor<? super Path> visitor = new FileVisitor<Path>(){
+                Path relativeOutputDirectory;
+                @Override
+                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                    relativeOutputDirectory = templateRootDirectory.toPath().relativize(dir);
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    try {
+                        Path outputDirectory = resultDirectory.toPath().resolve(relativeOutputDirectory);
+                        if(file.toString().endsWith(".ftl"))
+                            processFile(file.getParent().toFile(), file.getFileName().toString(), outputDirectory);
+                    } catch (TemplateException e) {
+                        getLog().error(e);
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                    getLog().error(exc);
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                    relativeOutputDirectory = null;
+                    return FileVisitResult.CONTINUE;
+                }
+            };
+            try {
+                Files.walkFileTree(start, options, maxDepth, visitor);
+            } catch (MalformedTemplateNameException ex) {
+                getLog().error(ex.getMalformednessDescription());
+                throw new MojoExecutionException("MalformedTemplateNameException", ex);
+            } catch (ParseException ex) {
+                getLog().error(ex.getEditorMessage());
+                throw new MojoExecutionException("ParseException", ex);
             } catch (IOException ex) {
-                throw new MojoExecutionException("An IO exception on template directory raised.", ex);
+                getLog().error(ex.getMessage());
+                throw new MojoExecutionException("An IO exception on template file raised.", ex);
             }
-            cfg.setDefaultEncoding("UTF-8");
-            cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-            cfg.setObjectWrapper(new WorkbookWrapper(cfg.getIncompatibleImprovements()));
+
         }
+    }
 
-        /*  next, get the Template  */
-        Template temp;
-        try {
-            temp = cfg.getTemplate(templateFileName);
-        } catch (MalformedTemplateNameException ex) {
-            getLog().error(ex.getMalformednessDescription());
-            throw new MojoExecutionException("MalformedTemplateNameException", ex);
-        } catch (ParseException ex) {
-            getLog().error(ex.getEditorMessage());
-            throw new MojoExecutionException("ParseException", ex);
-        } catch (IOException ex) {
-            getLog().error(ex.getMessage());
-            throw new MojoExecutionException("An IO exception on template file raised.", ex);
+    private void processDirectory(File[] templateDirectories, Path outputDirectory) throws IOException, TemplateException {
+        for(File dir : templateDirectories) {
+            File[] files = files(dir);
+            for(File entry : files) {
+                processFile(dir, entry.getName(), outputDirectory);
+            }
+            File[] directories = directories(dir);
+            processDirectory(directories, outputDirectory);
         }
+    }
 
-        //Object dataModel = null;
-        //try {
-            if (modelFile == null) {
-                throw new MojoExecutionException("Model file has to be specified.");
-            }
-            if (!modelFile.exists()) {
-                throw new MojoExecutionException("Model file " + modelFile.toString() + " does not exists.");
-            }
-            if (!modelFile.isFile() || !modelFile.canRead()) {
-                throw new MojoExecutionException("Model path has to be a readable file.");
-            }
-            if (!(modelFile.toString().toLowerCase().endsWith(".xlsx") || modelFile.toString().toLowerCase().endsWith(".xlsm"))) {
-                throw new MojoExecutionException("File name has to end with '.xlsx'..");
-            }
-            //dataModel = new XSSFWorkbook(modelFile);
-        //} catch (IOException ex) {
-         //   getLog().error(ex.getMessage());
-        //    throw new MojoExecutionException("An IO exception on template file raised.", ex);
-        //} catch (InvalidFormatException ex) {
-        //    getLog().error(ex.getMessage());
-        //    throw new MojoExecutionException("InvalidFormatException", ex);
-        //}
+    private void processFile(File templateDirectory, String templateFileName, Path outputDirectory) throws IOException, TemplateException {
+        assert templateDirectory.isDirectory();
 
+        Template temp = getTemplate(templateDirectory, templateFileName);
+
+        processTemplate(templateFileName, temp, outputDirectory);
+    }
+
+    private static File[] files(File templateDir) {
+        FileFilter filter = new FileFilter(){
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().endsWith(".ftl");
+            }
+        };
+        return templateDir.listFiles(filter);
+    }
+
+    private static File[] directories(File templateDir) {
+        FileFilter filter = new FileFilter(){
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.isDirectory();
+            }
+        };
+        return templateDir.listFiles(filter);
+    }
+
+    private void processTemplate(String templateFileName, Template temp, Path directory) throws TemplateException, IOException {
         final Charset charset = Charset.forName("UTF-8");
-        
+
         BufferedWriter writer = null;
         try {
-            final Path directory = resultDirectory.toPath();
-            //logger.info("file:"+ file.toFile().getAbsolutePath());
             Files.createDirectories(directory);
             getLog().info("ensure directory " + directory.toString() + " exists");
-            final Path file = Paths.get(resultDirectory.toString(), templateFileName.replace(".ftl", ".mdo"));
+            final Path file = Paths.get(directory.toString(), templateFileName.replace(".ftl", ""));
             writer = newBufferedWriter(file, charset, TRUNCATE_EXISTING, CREATE, WRITE);
             temp.process(modelFile, writer);
         } catch (TemplateException ex) {
             getLog().error(ex.getBlamedExpressionString());
             getLog().error(ex.getFTLInstructionStack());
             getLog().error(ex.getTemplateSourceName());
-            throw new MojoExecutionException("An IO exception on template file raised.", ex);
+            throw ex;
         } catch (IOException ex) {
             if (ex.getCause() != null) {
                 getLog().error(ex.getCause().getMessage());
             }
             getLog().error(ex.getMessage());
-            throw new MojoExecutionException("An IO exception", ex);
+            throw ex;
         } finally {
             if (writer != null) {
                 try {
@@ -162,5 +235,34 @@ public class FreeMarkerMojo
                 }
             }
         }
+    }
+
+    private Template getTemplate(File templateDirectory, String templateFileName) throws IOException {
+        final Configuration cfg = new Configuration(Configuration.VERSION_2_3_22);
+        try {
+            cfg.setDirectoryForTemplateLoading(templateDirectory);
+        } catch (IOException ex) {
+            getLog().error(ex);
+        }
+        cfg.setDefaultEncoding("UTF-8");
+        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        cfg.setObjectWrapper(new WorkbookWrapper(cfg.getIncompatibleImprovements()));
+
+        /*  next, get the Template  */
+        Template temp;
+        try {
+            temp = cfg.getTemplate(templateFileName);
+            getLog().info("find " + temp.getName());
+        } catch (MalformedTemplateNameException ex) {
+            getLog().error(ex.getMalformednessDescription());
+            throw ex;
+        } catch (ParseException ex) {
+            getLog().error(ex.getEditorMessage());
+            throw ex;
+        } catch (IOException ex) {
+            getLog().error(ex.getMessage());
+            throw ex;
+        }
+        return temp;
     }
 }

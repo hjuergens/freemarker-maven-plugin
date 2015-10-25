@@ -51,10 +51,25 @@ public class FreeMarkerMojoTest
     /**
      * @throws Exception if any
      */
-    public void testSomething2()
-        throws Exception
+    public void testProject01()
+            throws Exception
     {
-        File pom = getTestFile( "target/test-classes/project/pom.xml" );
+        File pom = getTestFile( "target/test-classes/project01/pom.xml" );
+        assertNotNull( pom );
+        assertTrue( pom.exists() );
+
+        FreeMarkerMojo myMojo = (FreeMarkerMojo) lookupMojo( "process", pom );
+        assertNotNull( myMojo );
+        myMojo.execute();
+    }
+
+    /**
+     * @throws Exception if any
+     */
+    public void testProject02()
+            throws Exception
+    {
+        File pom = getTestFile( "target/test-classes/project02/pom.xml" );
         assertNotNull( pom );
         assertTrue( pom.exists() );
 

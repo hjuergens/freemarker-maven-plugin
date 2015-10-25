@@ -4,10 +4,10 @@
 
     <groupId>net.hjuergens</groupId>
     <artifactId>freemarker-maven-plugin</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3</version>
     <packaging>maven-plugin</packaging>
 
-    <name>freemarker-maven-plugin Maven Plugin</name>
+    <name>Freemarker Maven Plugin</name>
     <url>http://home.arcor.de/hjuergens</url>
 
     <organization>
@@ -30,7 +30,6 @@
         <developerConnection>scm:git:git@github.com:hjuergens/${project.artifactId}.git</developerConnection>
         <url>http://github.com/hjuergens/${project.artifactId}/</url>
     </scm>
-
 
     <issueManagement>
         <system>Github</system>
@@ -55,8 +54,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.6</maven.compiler.source>
-        <maven.compiler.target>1.6</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>

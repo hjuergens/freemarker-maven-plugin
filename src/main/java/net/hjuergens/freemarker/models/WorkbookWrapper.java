@@ -27,7 +27,7 @@ public class WorkbookWrapper
     protected TemplateModel handleUnknownType(final Object obj)
             throws TemplateModelException {
         if (obj instanceof File) {
-            return new WorkbookPOIFileTemplateModel((File) obj, this);
+            return new POIFileTemplateModel((File) obj, this);
         } else if (obj instanceof Workbook) {
             return new WorkbookTemplateModel((Workbook) obj, this);
         } else if (obj instanceof Sheet) {

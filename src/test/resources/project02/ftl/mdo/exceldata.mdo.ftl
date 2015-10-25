@@ -29,7 +29,7 @@ under the License.
     <defaults>
         <default>
             <key>package</key>
-            <value>de.juergens.data</value>
+            <value>net.sf.hajuergens.data</value>
         </default>
     </defaults>
     <classes>
@@ -82,7 +82,7 @@ under the License.
                     <name>rows</name>
                     <version>1.0.0</version>
                     <association xml.itemsStyle="wrapped">
-                        <type>ROW-${sheet.name}</type>
+                        <type>ROW_${sheet.name}</type>
                         <multiplicity>*</multiplicity>
                     </association>
                 </field>
@@ -90,86 +90,5 @@ under the License.
         </class>
         </#list>
 
-
-<!--
-        <#list workbook as sheet>
-        <#list sheet as row>
-        <class>
-            <name>Row</name>
-            <description><![CDATA[Put the description here.]]></description>
-            <version>1.0.0</version>
-            <fields>
-                    <field>
-                        <name>name</name>
-                        <identifier>true</identifier>
-                        <required>true</required>
-                        <description><![CDATA[content]]></description>
-                        <type>String</type>
-                    </field>
-                    <field>
-                        <name>sheet</name>
-                        <version>1.0.0</version>
-                        <association>
-                            <type>Sheet</type>
-                            <multiplicity>1</multiplicity>
-                        </association>
-                    </field>
-                    <field>
-                        <name>cells</name>
-                        <version>1.0.0</version>
-                        <association xml.itemsStyle="wrapped">
-                            <type>Cell</type>
-                            <multiplicity>*</multiplicity>
-                        </association>
-                    </field>
-            </fields>
-        </class>
-        </#list>
-        </#list>
-
-        <#list workbook as sheet>
-        <class>
-            <name>Sheet</name>
-            <description><![CDATA[Put the description here.]]></description>
-            <version>1.0.0</version>
-            <fields>
-                    <field>
-                        <name>name</name>
-                        <required>true</required>
-                        <description><![CDATA[${sheet.name}]]></description>
-                        <type>Cell</type>
-                        <value>${sheet.name}</value>
-                    </field>
-                    <field>
-                        <name>rows</name>
-                        <version>1.0.0</version>
-                        <association>
-                            <type>Row</type>
-                            <multiplicity>*</multiplicity>
-                        </association>
-                    </field>
-            </fields>
-        </class>
-        </#list>
-
-
-        <class rootElement="true">
-            <name>Workbook</name>
-            <description><![CDATA[Static DataBean Representation of an Excel Workbook]]></description>
-            <version>1.0.0</version>
-            <fields>
-                <#list workbook as sheet>
-                <field>
-                    <name>table</name>
-                    <version>1.0.0</version>
-                    <association>
-                        <type>${sheet.name}</type>
-                        <multiplicity>1</multiplicity>
-                    </association>
-                </field>
-                </#list>
-            </fields>
-        </class>
--->
     </classes>
 </model>

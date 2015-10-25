@@ -14,13 +14,13 @@ import java.util.Iterator;
  *
  * @author juergens
  */
-class WorkbookPOIFileTemplateModel
+class POIFileTemplateModel
         extends WrappingTemplateModel
         implements TemplateCollectionModelEx, TemplateHashModel, AdapterTemplateModel {
 
     private final File filename;
 
-    public WorkbookPOIFileTemplateModel(File workbookFile, ObjectWrapper ow) {
+    public POIFileTemplateModel(File workbookFile, ObjectWrapper ow) {
         super(ow);  // coming from WrappingTemplateModel
         this.filename = workbookFile;
     }
@@ -43,7 +43,7 @@ class WorkbookPOIFileTemplateModel
         } else if (s.equals("name")) {
             return wrap(filename);
         } else {
-            throw new TemplateModelException("unknown " + s);
+            return null;//throw new TemplateModelException("unknown " + s);
         }
     }
 

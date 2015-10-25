@@ -23,9 +23,9 @@
       <plugin>
         <artifactId>freemarker-maven-plugin</artifactId>
         <configuration>
-          <templateFile>target/test-classes/project/ftl/exceldata.ftl</templateFile>
-          <modelFile>target/test-classes/project/excel/indexes.xlsx</modelFile>
-          <resultDirectory>target/generated-resources/mdo</resultDirectory>
+          <templateRootDirectory>target/test-classes/project02/ftl</templateRootDirectory>
+          <modelFile>target/test-classes/project02/excel/indexes.xlsx</modelFile>
+          <resultDirectory>target/generated-resources/project02</resultDirectory>
         </configuration>
       </plugin>
     </plugins>

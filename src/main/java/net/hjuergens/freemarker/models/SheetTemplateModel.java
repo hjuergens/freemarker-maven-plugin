@@ -12,7 +12,7 @@ import org.apache.poi.ss.usermodel.Sheet;
  *
  * @author juergens
  */
-public class SheetTemplateModel
+class SheetTemplateModel
         extends WrappingTemplateModel
         implements TemplateSequenceModel, TemplateHashModel, AdapterTemplateModel {
 
@@ -30,7 +30,7 @@ public class SheetTemplateModel
      * @throws TemplateModelException
      */
     public int size() throws TemplateModelException {
-        return sheet.getPhysicalNumberOfRows();
+        return  sheet.getLastRowNum() - sheet.getFirstRowNum();
     }
 
     /**
@@ -41,7 +41,11 @@ public class SheetTemplateModel
      * @throws TemplateModelException
      */
     public TemplateModel get(int index) throws TemplateModelException {
-        return wrap(sheet.getRow(index));
+        try {
+            return wrap(sheet.getRow(index+1));
+        } catch (Exception e) {
+            throw new TemplateModelException("index:" + index,e);
+        }
     }
 
     /**
