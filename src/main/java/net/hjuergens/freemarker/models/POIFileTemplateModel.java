@@ -8,6 +8,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 /**
  * created on 29.09.15
@@ -33,13 +38,17 @@ class POIFileTemplateModel
     @Override
     public TemplateModel get(String s) throws TemplateModelException {
         if (s.equals("workbook")) {
+            Workbook workbook = null;
             try {
-                return wrap(new XSSFWorkbook(filename));
+                workbook = WorkbookFactory.create(filename, s, true);
             } catch (IOException ex) {
                 throw new TemplateModelException(ex);
             } catch (InvalidFormatException ex) {
                 throw new TemplateModelException(ex);
+            } catch (EncryptedDocumentException ex) {
+                throw new TemplateModelException(ex);
             }
+            return wrap(workbook);
         } else if (s.equals("name")) {
             return wrap(filename);
         } else {
