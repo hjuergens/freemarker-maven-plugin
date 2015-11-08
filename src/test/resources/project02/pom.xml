@@ -25,7 +25,7 @@
         <configuration>
           <templateRootDirectory>target/test-classes/project02/ftl</templateRootDirectory>
           <modelFile>target/test-classes/project02/excel/indexes.xlsx</modelFile>
-          <resultDirectory>target/generated-resources/project02</resultDirectory>
+          <resultDirectory>target/generated-test-resources/project02</resultDirectory>
         </configuration>
       </plugin>
     </plugins>

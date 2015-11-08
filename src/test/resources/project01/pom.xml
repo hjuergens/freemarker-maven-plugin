@@ -25,7 +25,7 @@
           <configuration>
             <templateFile>target/test-classes/project01/ftl/Database.java.ftl</templateFile>
             <modelFile>target/test-classes/project01/excel/indexes.xlsx</modelFile>
-            <resultDirectory>target/generated-sources/project01/java</resultDirectory>
+            <resultDirectory>target/generated-test-sources/project01/java</resultDirectory>
           </configuration>
       </plugin>
     </plugins>

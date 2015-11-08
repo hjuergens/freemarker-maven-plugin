@@ -38,17 +38,17 @@
 
     <distributionManagement>
         <repository>
-            <id>hjuergens.git.server</id>
-            <url>scm:git:git@github.com:hjuergens/${project.artifactId}.git</url>
+            <id>home.arcor</id>
+            <url>ftp://home.arcor.de/${project.artifactId}</url>
         </repository>
         <snapshotRepository>
-            <id>hjuergens.git.server</id>
-            <url>scm:git:git@github.com:hjuergens/${project.artifactId}.git</url>
+            <id>home.arcor</id>
+            <url>ftp://home.arcor.de/${project.artifactId}</url>
         </snapshotRepository>
         <site>
             <id>home.arcor</id>
             <name>Arcor Home</name>
-            <url>ftp://home.arcor.de</url>
+            <url>ftp://home.arcor.de/${project.artifactId}</url>
         </site>
     </distributionManagement>
 
@@ -105,7 +105,6 @@
             <artifactId>functionaljava-quickcheck</artifactId>
             <version>4.4</version>
         </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -116,6 +115,18 @@
             <groupId>org.apache.maven.plugin-testing</groupId>
             <artifactId>maven-plugin-testing-harness</artifactId>
             <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.forge.roaster</groupId>
+            <artifactId>roaster-api</artifactId>
+            <version>2.17.2.Final</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.forge.roaster</groupId>
+            <artifactId>roaster-jdt</artifactId>
+            <version>2.17.2.Final</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -173,6 +184,14 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ftp</artifactId>
+                <version>1.0-beta-6</version>
+            </extension>
+        </extensions>
 
         <plugins>
             <plugin>
