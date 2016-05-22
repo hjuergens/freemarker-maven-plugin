@@ -8,11 +8,11 @@
     <packaging>maven-plugin</packaging>
 
     <name>Freemarker Maven Plugin</name>
-    <url>http://home.arcor.de/hjuergens</url>
+    <url>http://hjuergens.github.io/${project.artifactId}</url>
 
     <organization>
         <name>Jürgens</name>
-        <url>https://github.com/hjuergens/${project.artifactId}</url>
+        <url>http://hjuergens.github.io/</url>
     </organization>
 
     <developers>
@@ -39,16 +39,20 @@
     <distributionManagement>
         <repository>
             <id>home.arcor</id>
-            <url>ftp://home.arcor.de/${project.artifactId}</url>
+            <url>ftp://home.arcor.de/${project.artifactId}/repo</url>
         </repository>
         <snapshotRepository>
             <id>home.arcor</id>
-            <url>ftp://home.arcor.de/${project.artifactId}</url>
+            <url>ftp://home.arcor.de/${project.artifactId}/rep</url>
         </snapshotRepository>
-        <site>
+        <!--site>
             <id>home.arcor</id>
             <name>Arcor Home</name>
             <url>ftp://home.arcor.de/${project.artifactId}</url>
+        </site-->
+        <site>
+            <id>github</id>
+            <url>scm:git:git://git@github.com/hjuergens/${project.artifactId}.git</url>
         </site>
     </distributionManagement>
 
@@ -176,7 +180,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.1</version>
+                    <version>3.4</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -234,7 +238,16 @@
                         <goals>
                             <goal>site</goal>
                         </goals>
-                        <phase>none<!--site--></phase>
+                        <phase>site</phase>
+                        <configuration>
+                            <server>github</server>
+                            <!-- repository identification -->
+                            <repositoryName>${project.artifactId}</repositoryName>
+                            <repositoryOwner>hjuergens</repositoryOwner>                            <message>Generated site for site-maven-plugin 0.12</message>
+                            <!-- Destination directory -->
+                            <path>${project.artifactId}</path>
+                            <merge>true</merge>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -330,12 +343,22 @@
                     <sortColumnNames>Fix Version</sortColumnNames>
                 </configuration>
             </plugin>
-            <!-- sonar-report -->
-            <plugin>
-                <groupId>org.codehaus.sonar-plugins</groupId>
-                <artifactId>maven-report</artifactId>
-                <version>0.1</version>
-            </plugin>
         </plugins>
     </reporting>
+
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <reporting>
+                <plugins>
+                <!-- sonar-report -->
+                <plugin>
+                    <groupId>org.codehaus.sonar-plugins</groupId>
+                    <artifactId>maven-report</artifactId>
+                    <version>0.1</version>
+                </plugin>
+                </plugins>
+            </reporting>
+        </profile>
+    </profiles>
 </project>
