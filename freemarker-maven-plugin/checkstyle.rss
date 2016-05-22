@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<rss version="0.91">
+  <channel>
+    <title>Freemarker Maven Plugin - Checkstyle report</title>
+    <link>http://hjuergens.github.io/freemarker-maven-plugin</link>
+    <description>Freemarker Maven Plugin - Checkstyle report</description>
+    <language>en-us</language>
+    <copyright>&#169;2016 Jürgens</copyright>
+    <item>
+      <title>File: 8,
+             Errors: 255,
+             Warnings: 0,
+             Infos: 0
+      </title>
+            <link>http://hjuergens.github.io/freemarker-maven-plugin/checkstyle.html</link>
+      <description>
+        <p>Click <a href="http://hjuergens.github.io/freemarker-maven-plugin/checkstyle.html">here</a> for the full Checkstyle report.</p>
+
+        <table summary="Files" boder="1">
+          <thead>
+            <tr>
+              <th>Files</th>
+              <th style="width:30px;"><abbr title="Info">I</abbr></th>
+              <th style="width:30px;"><abbr title="Warning">W</abbr></th>
+              <th style="width:30px;"><abbr title="Error">E</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+                          <tr>
+                <td>
+                  <a href="http://hjuergens.github.io/freemarker-maven-plugin/checkstyle.html#net.hjuergens.freemarker.models.SheetTemplateModel.java">net/hjuergens/freemarker/models/SheetTemplateModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  42
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://hjuergens.github.io/freemarker-maven-plugin/checkstyle.html#net.hjuergens.freemarker.models.ColumnTemplateModel.java">net/hjuergens/freemarker/models/ColumnTemplateModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  33
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://hjuergens.github.io/freemarker-maven-plugin/checkstyle.html#net.hjuergens.freemarker.maven.plugin.FreeMarkerMojo.java">net/hjuergens/freemarker/maven/plugin/FreeMarkerMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  79
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://hjuergens.github.io/freemarker-maven-plugin/checkstyle.html#net.hjuergens.freemarker.models.POIFileTemplateModel.java">net/hjuergens/freemarker/models/POIFileTemplateModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  14
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://hjuergens.github.io/freemarker-maven-plugin/checkstyle.html#net.hjuergens.freemarker.models.RowTemplateModel.java">net/hjuergens/freemarker/models/RowTemplateModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  18
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://hjuergens.github.io/freemarker-maven-plugin/checkstyle.html#net.hjuergens.freemarker.models.WorkbookWrapper.java">net/hjuergens/freemarker/models/WorkbookWrapper.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  7
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://hjuergens.github.io/freemarker-maven-plugin/checkstyle.html#net.hjuergens.freemarker.models.WorkbookTemplateModel.java">net/hjuergens/freemarker/models/WorkbookTemplateModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  19
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://hjuergens.github.io/freemarker-maven-plugin/checkstyle.html#net.hjuergens.freemarker.models.CellTemplateModel.java">net/hjuergens/freemarker/models/CellTemplateModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  43
+                </td>
+              </tr>
+                      </tbody>
+        </table>
+        
+      </description>
+    </item>
+  </channel>
+</rss>
+
