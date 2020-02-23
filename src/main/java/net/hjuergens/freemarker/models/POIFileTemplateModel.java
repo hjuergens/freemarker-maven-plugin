@@ -62,11 +62,6 @@ class POIFileTemplateModel
     }
 
     @Override
-    public boolean contains(TemplateModel tm) throws TemplateModelException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public TemplateModelIterator iterator() throws TemplateModelException {
         final Iterator<Path> entries = filename.toPath().iterator();
         return new TemplateModelIterator() {
