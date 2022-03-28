@@ -1,6 +1,6 @@
 # Intro
 
-If you are familiar with maven you already now the interpolation task.
+If you are familiar with maven you already know the interpolation task.
 
 
 This Maven plugin Integrates FreeMarker in a maven build.
