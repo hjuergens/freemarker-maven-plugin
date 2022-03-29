@@ -71,7 +71,7 @@ class RowTemplateModel
 
     @Override
     public TemplateModel get(int i) throws TemplateModelException {
-        return wrap(row.getCell(i, Row.CREATE_NULL_AS_BLANK));
+        return wrap(row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
     }
 
     @Override

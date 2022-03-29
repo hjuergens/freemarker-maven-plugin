@@ -1,11 +1,14 @@
 package net.hjuergens.freemarker.models;
 
 import fj.F2;
+import fj.data.List;
 import freemarker.template.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+
+import java.util.Iterator;
 
 /**
  * created on 29.09.15
@@ -66,8 +69,8 @@ class SheetTemplateModel
         final Row firstRow = sheet.getRow(sheet.getFirstRowNum());
         final Row secondRow = sheet.getRow(sheet.getFirstRowNum() + 1);
 
-        final fj.data.List<Cell> nameList = fj.data.List.list(firstRow.cellIterator());
-        final fj.data.List<Cell> typeList = fj.data.List.list(secondRow.cellIterator());
+        final fj.data.List<Cell> nameList = fj.data.List.iteratorList(firstRow.cellIterator());
+        final fj.data.List<Cell> typeList = fj.data.List.iteratorList(secondRow.cellIterator());
 
         F2<Cell, Cell, Pair<Cell, Cell>> f = new F2<Cell, Cell, Pair<Cell, Cell>>() {
             /**

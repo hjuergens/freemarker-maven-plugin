@@ -43,8 +43,6 @@ class POIFileTemplateModel
                 workbook = WorkbookFactory.create(filename, s, true);
             } catch (IOException ex) {
                 throw new TemplateModelException(ex);
-            } catch (InvalidFormatException ex) {
-                throw new TemplateModelException(ex);
             } catch (EncryptedDocumentException ex) {
                 throw new TemplateModelException(ex);
             }

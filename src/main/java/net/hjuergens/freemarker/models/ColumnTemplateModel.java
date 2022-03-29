@@ -3,6 +3,7 @@ package net.hjuergens.freemarker.models;
 import freemarker.template.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 
 /**
@@ -51,8 +52,8 @@ class ColumnTemplateModel
             return getTypeName();
         else if(s.equals("type")) {
             final Cell cell = nameAndType.getValue();
-            final int cellType;
-            if(cell.getCellType() == Cell.CELL_TYPE_FORMULA)
+            final CellType cellType;
+            if(cell.getCellType() == CellType.FORMULA)
                 cellType = cell.getCachedFormulaResultType();
             else cellType = cell.getCellType();
             return wrap(cellType);

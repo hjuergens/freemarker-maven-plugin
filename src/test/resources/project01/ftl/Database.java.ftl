@@ -24,11 +24,11 @@ public class Database {
         public class Row {
         <#list sheet.columns as column>
             protected
-            <#if column.type == 1>
+            <#if column.type == "1">
                 String
-            <#elseif column.type == 0>
+            <#elseif column.type == "0">
                 Number
-            <#elseif column.type == 4>
+            <#elseif column.type == "4">
                 boolean
             <#else>
                 OOPS
@@ -51,11 +51,11 @@ public class Database {
                 <#list sheet.columns as column>
                     <#if column?index < row.size>
                     tmp.${column.name?uncap_first} =
-                    <#if column.type == CELL_TYPE_STRING>
+                    <#if column.type == "2">
                         "${row[column?index].value?j_string}";
-                    <#elseif column.type == CELL_TYPE_NUMERIC>
+                    <#elseif column.type == "0">
                         ${row[column?index].value};
-                    <#elseif column.type == CELL_TYPE_BOOLEAN>
+                    <#elseif column.type == "4">
                         ${row[column?index].value?c};
                     <#else>
                         null;

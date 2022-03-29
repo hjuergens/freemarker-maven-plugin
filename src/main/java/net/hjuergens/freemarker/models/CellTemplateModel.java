@@ -2,6 +2,7 @@ package net.hjuergens.freemarker.models;
 
 import freemarker.template.*;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 
 /**
  * created on 29.09.15
@@ -25,14 +26,10 @@ class CellTemplateModel
         return cell;
     }
 
-    public Number getCellType() {
-        return cell.getCellType();
-    }
-
     @Override
     public TemplateModel get(String s) throws TemplateModelException {
         if("type".equals(s)) {
-            return wrap( getCellType() );
+            return wrap( cell.getCellType() );
         } else if("columnIndex".equals(s)) {
             return wrap( cell.getColumnIndex() );
         } else if("row".equals(s)) {
@@ -45,23 +42,23 @@ class CellTemplateModel
     }
 
     public static Object getValue(Cell cell) {
-        final int cellType;
-        if(cell.getCellType() == Cell.CELL_TYPE_FORMULA)
+        final CellType cellType;
+        if(cell.getCellType() == CellType.FORMULA)
             cellType = cell.getCachedFormulaResultType();
         else cellType = cell.getCellType();
 
         switch (cellType) {
-            case Cell.CELL_TYPE_BOOLEAN:
+            case BOOLEAN:
                 return ( cell.getBooleanCellValue() );
-            case Cell.CELL_TYPE_NUMERIC:
+            case NUMERIC:
                 return ( cell.getNumericCellValue() );
-            case Cell.CELL_TYPE_STRING:
+            case STRING:
                 return ( cell.getStringCellValue() );
-            case Cell.CELL_TYPE_BLANK:
+            case BLANK:
                 return ( "" );
-            case Cell.CELL_TYPE_ERROR:
+            case ERROR:
                 return ( cell.getErrorCellValue() );
-            case Cell.CELL_TYPE_FORMULA:
+            case FORMULA:
                 System.out.println(cell.getCellFormula());
                 return ( cell.getCellFormula() );
             default:
@@ -71,6 +68,6 @@ class CellTemplateModel
 
     @Override
     public boolean isEmpty() throws TemplateModelException {
-        return cell.getCellType() == Cell.CELL_TYPE_BLANK;
+        return cell.getCellType() == CellType.BLANK;
     }
 }
